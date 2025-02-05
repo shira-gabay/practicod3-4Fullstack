@@ -1,6 +1,6 @@
 import axios from 'axios';
  
-const apiUrl = "http://localhost:5158";
+const apiUrl = process.env.REACT_APP_API_URL;
 const apiclient=axios.create({baseURL:apiUrl});
 apiclient.interceptors.response.use(response => response, error => {console.error('Axios error response:',error.response)
 return Promise.reject(error);});
@@ -44,7 +44,7 @@ export default {
   // פונקציה למחיקת משימה לפי מזהה
   deleteTask: async (id) => {
     try {
-      await apiclient.delete(`${apiUrl}/items/${id}`);
+      await apiclient.delete(`/items/${id}`);
       console.log('deleteTask', id);
       return {};
     } catch (error) {
