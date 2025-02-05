@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace TodoApi;
-
+[Table("items")]
 public partial class Item
 {
     public int Id { get; set; }
