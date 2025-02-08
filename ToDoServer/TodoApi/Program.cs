@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql("ToDoDB" , Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql80")));
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB") , Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql80")));
 
 var app = builder.Build();
 app.UseSwagger();  
