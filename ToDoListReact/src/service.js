@@ -1,9 +1,14 @@
 import axios from 'axios';
  
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const apiclient=axios.create({baseURL:apiUrl});
-apiclient.interceptors.response.use(response => response, error => {console.error('Axios error response:',error.response)
-return Promise.reject(error);});
+apiclient.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('Axios error response:', error?.response || error);
+    return Promise.reject(error.response?.data?.message || "שגיאה כללית בשרת");
+  }
+);
 export default {
   // פונקציה לקבלת כל המשימות
   getTasks: async () => {
@@ -31,9 +36,9 @@ export default {
   // פונקציה לעדכון סטטוס משימה
   setCompleted: async (id, isComplete) => {
     try {
-      const result = await apiclient.put(`/items/${id}?inputItem=${isComplete}`);
+      const { data }= await apiclient.put(`/items/${id}?inputItem=${isComplete}`);
       console.log('setCompleted', { id, isComplete });
-      return result.data;
+      return data;
     } catch (error) {
       console.error('Error in setCompleted:', error.message);
       return {};
